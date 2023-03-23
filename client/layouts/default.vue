@@ -1,10 +1,12 @@
 <template>
     <v-app>
         <v-app-bar app color="primary" dark>
-            <v-toolbar-title>All SpaceX Launches</v-toolbar-title>
+            <v-toolbar-title>
+                <nuxt-link to="/" class="nav-link">SpaceX</nuxt-link>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <nuxt-link to="/" class="nav-link">Home</nuxt-link>
-            <nuxt-link to="/about" class="nav-link">About</nuxt-link>
+            <nuxt-link to="/rockets" class="nav-link">Rockets</nuxt-link>
             <nuxt-link to="/launches" class="nav-link">Launches</nuxt-link>
         </v-app-bar>
 

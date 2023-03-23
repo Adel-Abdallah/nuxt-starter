@@ -13,10 +13,15 @@
                     </v-card>
                 </v-col>
                 <v-col v-else cols="12">
-                    <v-card>
+                    <v-card class="card">
                         <v-card-title>{{ rocket.name }}</v-card-title>
-                        <v-card-subtitle>First Flight: {{ rocket.first_flight }}</v-card-subtitle>
                         <v-card-subtitle>{{ rocket.description }}</v-card-subtitle>
+                        <v-card-subtitle>First Flight: {{ rocket.first_flight }}</v-card-subtitle>
+                        <v-card-subtitle>Height by meters {{ rocket.height.meters }}</v-card-subtitle>
+                        <v-card-subtitle>Diameter{{ rocket.diameter.feet }}</v-card-subtitle>
+                        <v-card-subtitle>KG : {{ rocket.mass.kg }}</v-card-subtitle>
+                        <v-card-subtitle>LB : {{ rocket.mass.lb }}</v-card-subtitle>
+                        <v-card-subtitle>Stages : {{ rocket.stages }}</v-card-subtitle>
                     </v-card>
                 </v-col>
             </v-row>
@@ -107,3 +112,18 @@ const { data, error } = useAsyncQuery<{
 
 const rocket = computed(() => data.value?.rocket ?? [])
 </script>
+<style scoped>
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    min-height: 250px;
+    padding: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>OK</h1>
+        <h1>Home page content goes here!!!</h1>
     </v-container>
 </template>
 
