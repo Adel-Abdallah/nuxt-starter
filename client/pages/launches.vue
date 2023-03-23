@@ -24,6 +24,23 @@
 <script lang="ts" setup>
 import { gql } from 'graphql-tag'
 
+interface LaunchSite {
+    site_name_long: string
+}
+
+interface Rocket {
+    rocket_name: string
+}
+
+interface Launch {
+    id: string
+    mission_name: string
+    launch_date_local: string
+    launch_site: LaunchSite
+    rocket: Rocket
+    details?: string
+}
+
 const GET_LAUNCHES = gql`
     query GetLaunches {
         launches {
