@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :key="$route.path">
         <v-container>
             <h1>Rockets</h1>
             <v-row>

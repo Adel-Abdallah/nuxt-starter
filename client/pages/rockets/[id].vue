@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :key="$route.path">
         <v-container>
             <v-row>
                 <v-col v-if="error" cols="12">

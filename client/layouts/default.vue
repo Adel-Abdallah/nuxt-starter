@@ -11,6 +11,7 @@
         </v-app-bar>
 
         <v-main>
+            <NuxtLoadingIndicator />
             <slot />
         </v-main>
 
@@ -23,8 +24,12 @@
 </template>
 
 <script>
+import NuxtLoadingIndicator from '@/layouts/NuxtLoadingIndicator.vue'
 export default {
     name: 'DefaultLayout',
+    components: {
+        NuxtLoadingIndicator,
+    },
 }
 </script>
 
