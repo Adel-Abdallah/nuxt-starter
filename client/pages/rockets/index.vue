@@ -17,28 +17,17 @@
 </template>
 
 <script lang="ts" setup>
-import { gql } from 'graphql-tag'
-const { id } = 'useRoute().params'
-
-const GET_ROCKETS = gql`
-    query GetRockets {
-        rockets {
-            id
-            name
-            description
-        }
-    }
-`
+import { GET_ROCKETS } from '@/graphql/queries'
 
 const { data } = useAsyncQuery<{
     rockets: {
-        id?: String
-        name?: String
-        description?: String
-    }
-}>(GET_ROCKETS, {})
-console.log('data', data)
-const rockets = data.value?.rockets || []
+        id: string
+        name: string
+        description: string
+    }[]
+}>(GET_ROCKETS)
+
+const rockets = computed(() => data.value?.rockets ?? [])
 console.log('rockets', rockets)
 </script>
 

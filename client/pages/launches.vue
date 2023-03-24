@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { gql } from 'graphql-tag'
+import { GET_LAUNCHES } from '@/graphql/queries'
 
 interface LaunchSite {
     site_name_long: string
@@ -42,33 +42,10 @@ interface Launch {
     details?: string
 }
 
-const GET_LAUNCHES = gql`
-    query GetLaunches {
-        launches {
-            id
-            mission_name
-            launch_date_local
-            launch_site {
-                site_name_long
-            }
-            rocket {
-                rocket_name
-            }
-            details
-        }
-    }
-`
-
 const { data } = useAsyncQuery<{
-    launches: {
-        id: Number
-        mission_name: String
-        launch_date_local: String
-        rocket: {
-            rocket_name: String
-        }
-    }
+    launches: Launch[]
 }>(GET_LAUNCHES)
+
 console.log(data)
 console.log(`GET_LAUNCHES`, GET_LAUNCHES)
 const launches = computed(() => data.value?.launches ?? [])
