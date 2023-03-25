@@ -1,6 +1,11 @@
 <template>
-    <div :key="$route.path">
+    <div>
         <v-container>
+            <v-row v-if="isLoading && !rockets">
+                <div style="position: relative">
+                    <h1>Loading...</h1>
+                </div>
+            </v-row>
             <h1>Rockets</h1>
             <v-row>
                 <v-col v-for="rocket in rockets" :key="rocket.id" cols="12" md="6" lg="4">
@@ -18,8 +23,9 @@
 
 <script lang="ts" setup>
 import { GET_ROCKETS } from '@/graphql/queries'
-
-const { data } = useAsyncQuery<{
+const isLoading = ref(false)
+const isError = ref(false)
+const { data, error } = useAsyncQuery<{
     rockets: {
         id: string
         name: string
@@ -29,6 +35,12 @@ const { data } = useAsyncQuery<{
 
 const rockets = computed(() => data.value?.rockets ?? [])
 console.log('rockets', rockets)
+
+if (error.value) {
+    isLoading.value = false
+    isError.value = true
+    console.error(error)
+}
 </script>
 
 <style scoped>

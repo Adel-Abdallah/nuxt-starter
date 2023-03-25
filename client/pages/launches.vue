@@ -1,6 +1,11 @@
 <template>
     <div :key="$route.path">
         <v-container>
+            <v-row v-if="isLoading">
+                <div style="position: relative">
+                    <h1>Loading...</h1>
+                </div>
+            </v-row>
             <h1>Launches</h1>
             <v-select
                 v-model="selectedYear"
@@ -8,8 +13,8 @@
                 label="Filter by Year"
                 @change="filterLaunchesByYear"
             />
-            <v-row>
-                <v-col v-for="launch in filteredLaunches" :key="launch.id">
+            <v-row v-if="launchesByYear.length > 0">
+                <v-col v-for="launch in launchesByYear" :key="launch.id">
                     <v-card class="card">
                         <v-card-title v-if="launch.mission_name">{{ launch.mission_name }}</v-card-title>
                         <v-card-subtitle v-if="launch.launch_date_local">
@@ -33,8 +38,8 @@
         </v-container>
     </div>
 </template>
+
 <script lang="ts" setup>
-import useLaunches from '@/stores/useLaunches'
 interface Launch {
     id: string
     mission_name: string
@@ -49,20 +54,16 @@ interface Launch {
 }
 
 const { launches, filterByYear, years } = useLaunches()
-console.log(launches)
-console.log(filterByYear)
-console.log(years)
-
 const selectedYear = ref<number | null>(null)
-console.log(selectedYear)
+const isLoading = ref(false)
 
 const filterLaunchesByYear = () => {
-    console.log(filterLaunchesByYear)
-    filterByYear(selectedYear.value)
+    isLoading.value = true // set loading state to true
+    filterByYear(selectedYear.value) // make the API call
+    isLoading.value = false // set loading state back to false
 }
 
-const filteredLaunches = computed(() => {
-    console.log(filteredLaunches)
+const launchesByYear = computed(() => {
     if (selectedYear.value !== null) {
         return launches.value.filter((launch: Launch) => {
             const launchYear = new Date(launch.launch_date_local).getFullYear()
@@ -70,11 +71,11 @@ const filteredLaunches = computed(() => {
         })
     } else {
         // If selectedYear is null, return all launches
-        console.log(launches.value)
         return launches.value
     }
 })
 </script>
+
 <style scoped>
 .card {
     background-color: #fff;

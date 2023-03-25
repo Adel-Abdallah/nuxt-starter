@@ -1,4 +1,3 @@
-import { ref, computed, watch } from 'vue'
 import { GET_LAUNCHES } from '@/graphql/queries'
 
 interface LaunchSite {
