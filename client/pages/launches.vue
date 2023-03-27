@@ -6,15 +6,25 @@
                     <h1>Loading...</h1>
                 </div>
             </v-row>
-            <h1>Launches</h1>
-            <v-select
-                v-model="selectedYear"
-                :items="years"
-                label="Filter by Year"
-                @change="filterLaunchesByYear"
-            />
-            <v-row v-if="launchesByYear.length > 0">
-                <v-col v-for="launch in launchesByYear" :key="launch.id">
+            <v-row>
+                <v-col>
+                    <h1>Launches</h1>
+                </v-col>
+                <v-col></v-col>
+                <v-col>
+                    <v-btn-toggle v-model="sortDirection" mandatory>
+                        <v-btn @click="sortAscending">Ascending</v-btn>
+                        <v-btn @click="sortDescending">Descending</v-btn>
+                    </v-btn-toggle>
+                </v-col>
+            </v-row>
+            <v-row v-if="launches.length === 0">
+                <div style="position: relative">
+                    <h3>No launches found.</h3>
+                </div>
+            </v-row>
+            <v-row v-if="launches.length > 0">
+                <v-col v-for="launch in launches" :key="launch.id">
                     <v-card class="card">
                         <v-card-title v-if="launch.mission_name">{{ launch.mission_name }}</v-card-title>
                         <v-card-subtitle v-if="launch.launch_date_local">
@@ -40,40 +50,8 @@
 </template>
 
 <script lang="ts" setup>
-interface Launch {
-    id: string
-    mission_name: string
-    launch_date_local: string
-    launch_site: {
-        site_name_long: string
-    }
-    rocket: {
-        rocket_name: string
-    }
-    details?: string
-}
-
-const { launches, filterByYear, years } = useLaunches()
-const selectedYear = ref<number | null>(null)
-const isLoading = ref(false)
-
-const filterLaunchesByYear = () => {
-    isLoading.value = true // set loading state to true
-    filterByYear(selectedYear.value) // make the API call
-    isLoading.value = false // set loading state back to false
-}
-
-const launchesByYear = computed(() => {
-    if (selectedYear.value !== null) {
-        return launches.value.filter((launch: Launch) => {
-            const launchYear = new Date(launch.launch_date_local).getFullYear()
-            return launchYear === selectedYear.value
-        })
-    } else {
-        // If selectedYear is null, return all launches
-        return launches.value
-    }
-})
+const { isLoading, launches, sortAscending, sortDescending } = useLaunches()
+const sortDirection = ref<'ascending' | 'descending'>('ascending')
 </script>
 
 <style scoped>
@@ -85,7 +63,6 @@ const launchesByYear = computed(() => {
     min-height: 250px;
     padding: 20px;
 }
-
 .card:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);

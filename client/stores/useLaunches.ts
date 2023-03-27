@@ -23,18 +23,38 @@ export default function useLaunches() {
     }>(GET_LAUNCHES)
 
     const launches = ref<Launch[]>([])
+    const isLoading = ref(false)
 
     const selectedYear = ref<number | null>(null)
 
     const filteredLaunches = computed(() => {
+        let filtered = launches.value
+
         if (selectedYear.value !== null) {
-            return launches.value.filter((launch: Launch) => {
+            filtered = filtered.filter((launch: Launch) => {
                 const launchYear = new Date(launch.launch_date_local).getFullYear()
                 return launchYear === selectedYear.value
             })
         }
-        return launches.value
+
+        return filtered
     })
+
+    const sortAscending = () => {
+        filteredLaunches.value.sort((a, b) => {
+            const dateA = new Date(a.launch_date_local)
+            const dateB = new Date(b.launch_date_local)
+            return dateA.getTime() - dateB.getTime()
+        })
+    }
+
+    const sortDescending = () => {
+        filteredLaunches.value.sort((a, b) => {
+            const dateA = new Date(a.launch_date_local)
+            const dateB = new Date(b.launch_date_local)
+            return dateB.getTime() - dateA.getTime()
+        })
+    }
 
     const filterByYear = (year: number | null) => {
         selectedYear.value = year
@@ -53,6 +73,15 @@ export default function useLaunches() {
         (newLaunches: Launch[] | undefined) => {
             launches.value = newLaunches ?? []
         },
+        { immediate: true },
+    )
+
+    watch(
+        [data, error],
+        () => {
+            isLoading.value = false
+        },
+        { immediate: true },
     )
 
     if (error.value) {
@@ -61,9 +90,12 @@ export default function useLaunches() {
 
     return {
         error,
+        isLoading,
         launches,
         filterByYear,
         years,
         filteredLaunches,
+        sortAscending,
+        sortDescending,
     }
 }

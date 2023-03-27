@@ -1,5 +1,3 @@
-import { gql } from 'graphql-tag'
-
 export const GET_LAUNCHES = gql`
     query GetLaunches {
         launches {
