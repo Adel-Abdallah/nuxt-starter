@@ -26,6 +26,9 @@
             <v-row v-if="launches.length > 0">
                 <v-col v-for="launch in launches" :key="launch.id">
                     <v-card class="card">
+                        <v-card-actions>
+                            <v-btn @click="addToFavorites(launch)">Add to Favorites</v-btn>
+                        </v-card-actions>
                         <v-card-title v-if="launch.mission_name">{{ launch.mission_name }}</v-card-title>
                         <v-card-subtitle v-if="launch.launch_date_local">
                             Launch Date: {{ launch.launch_date_local }}
@@ -51,7 +54,13 @@
 
 <script lang="ts" setup>
 const { isLoading, launches, sortAscending, sortDescending } = useLaunches()
+const favoritesStore = useFavoritesStore()
 const sortDirection = ref<'ascending' | 'descending'>('ascending')
+
+const addToFavorites = (launch: any) => {
+    favoritesStore.addRocket(launch)
+    console.log(`Adding ${launch} to favorites`)
+}
 </script>
 
 <style scoped>

@@ -7,6 +7,7 @@
         <NuxtLink to="/" class="nav-link">Home</NuxtLink>
         <NuxtLink to="/rockets" class="nav-link">Rockets</NuxtLink>
         <NuxtLink to="/launches" class="nav-link">Launches</NuxtLink>
+        <NuxtLink to="/favorites" class="nav-link">Favorites</NuxtLink>
     </v-app-bar>
 </template>
 
